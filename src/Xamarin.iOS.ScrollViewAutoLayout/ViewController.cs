@@ -8,7 +8,7 @@ namespace Xamarin.iOS.ScrollViewAutoLayout
     {
         //ui
         UIScrollView _scrollView;
-        UIView _contentView;
+        UIView _contentView;//required for scroll view to work
 
         UILabel _label;
         UILabel _label1;
@@ -33,7 +33,7 @@ namespace Xamarin.iOS.ScrollViewAutoLayout
 
         void InitializeSubviews()
         {
-            //subviews
+            
             _scrollView = new UIScrollView();
             _scrollView.TranslatesAutoresizingMaskIntoConstraints = false;
             _scrollView.BackgroundColor = UIColor.Green;
@@ -65,11 +65,13 @@ namespace Xamarin.iOS.ScrollViewAutoLayout
 
         void SetupConstraints()
         {
+            //UIScrollView can be any size 
             _scrollView.TopAnchor.ConstraintEqualTo(View.TopAnchor, 50).Active = true;
             _scrollView.LeftAnchor.ConstraintEqualTo(View.LeftAnchor, 10).Active = true;
             _scrollView.RightAnchor.ConstraintEqualTo(View.RightAnchor, -10).Active = true;
             _scrollView.BottomAnchor.ConstraintEqualTo(View.BottomAnchor, -50).Active = true;
 
+            //Inner UIView has to be attached to all UIScrollView constraints
             _contentView.TopAnchor.ConstraintEqualTo(_contentView.Superview.TopAnchor).Active = true;
             _contentView.RightAnchor.ConstraintEqualTo(_contentView.Superview.RightAnchor).Active = true;
             _contentView.LeftAnchor.ConstraintEqualTo(_contentView.Superview.LeftAnchor).Active = true;
@@ -87,10 +89,13 @@ namespace Xamarin.iOS.ScrollViewAutoLayout
             _label1.HeightAnchor.ConstraintEqualTo(400).Active = true;
 
             _label2.TopAnchor.ConstraintEqualTo(_label1.BottomAnchor, 100).Active = true;
-            _label2.BottomAnchor.ConstraintEqualTo(_label2.Superview.BottomAnchor, -20).Active = true;
             _label2.LeftAnchor.ConstraintEqualTo(_label2.Superview.LeftAnchor, 4).Active = true;
             _label2.RightAnchor.ConstraintEqualTo(_label2.Superview.RightAnchor, -4).Active = true;
             _label2.HeightAnchor.ConstraintEqualTo(400).Active = true;
+
+            /* THIS IS WHAT MAKES IT WORK. THE MOST BOTTOM SUBVIEW NEEDS TO HAVE BTTOMANCHOR 
+               ATTACHED TO CONTENT VIEW */
+            _label2.BottomAnchor.ConstraintEqualTo(_label2.Superview.BottomAnchor, -20).Active = true;
         }
 
 
